@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger.json'); 
+const swaggerDocument = require('./swagger.json'); 
 
 const app = express();
 app.use(cors());
@@ -16,7 +16,6 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.use('/users', require('./routes/users'));
 app.use('/contacts', require('./routes/contacts'));
-app.use('/api-docs', require('./routes/swagger'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
