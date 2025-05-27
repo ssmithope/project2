@@ -1,0 +1,15 @@
+### Get All Users
+GET http://localhost:10000/users
+Accept: application/json
+
+### Add a New User
+POST http://localhost:10000/users
+Content-Type: application/json
+
+{
+   "firstName": "John",
+   "lastName": "Doe",
+   "email": "john@example.com",
+   "password": "securepass",
+   "role": "user"
+}
