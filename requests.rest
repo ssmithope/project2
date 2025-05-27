@@ -2,14 +2,34 @@
 GET http://localhost:10000/users
 Accept: application/json
 
-### Add a New User
+### Get User by ID
+GET http://localhost:10000/users/68350ce681ba1dc3663bf607
+Accept: application/json
+
+### Create a New User
 POST http://localhost:10000/users
 Content-Type: application/json
 
 {
    "firstName": "John",
    "lastName": "Doe",
-   "email": "john@example.com",
+   "email": "doejn@example.com",
    "password": "securepass",
    "role": "user"
 }
+
+### Update User by ID 
+PUT http://localhost:10000/users/68350ce681ba1dc3663bf607
+Content-Type: application/json
+
+{
+   "firstName": "John",
+   "lastName": "Doe",
+   "email": "updated@example.com",
+   "password": "newsecurepass",
+   "role": "admin"
+}
+
+### Delete User by ID (Replace {id} with actual ID)
+DELETE http://localhost:10000/users/{id}
+Accept: application/json

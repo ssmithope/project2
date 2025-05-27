@@ -5,11 +5,13 @@ const mongoose = require('mongoose');
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
+// Get all users
 router.get('/', async (req, res) => {
     const users = await User.find();
     res.json(users);
 });
 
+//Get user by ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
@@ -19,6 +21,7 @@ router.get('/:id', async (req, res) => {
     user ? res.json(user) : res.status(404).json({ error: "User not found" });
 });
 
+//Create a new user
 router.post('/', async (req, res) => {
     try {
         const newUser = new User(req.body);
@@ -29,6 +32,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+// Update user
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
@@ -38,6 +42,7 @@ router.put('/:id', async (req, res) => {
     updatedUser ? res.json({ message: "User updated successfully", user: updatedUser }) : res.status(404).json({ error: "User not found" });
 });
 
+// Delete user
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
