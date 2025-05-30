@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json'); 
@@ -20,7 +21,15 @@ app.use(cors({
 app.use(express.json());
 
 // Session Configuration for OAuth
-app.use(session({ secret: 'process.env.SESSION_SECRET', resave: false, saveUninitialized: false }));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        ttl: 14 * 24 * 60 * 60 
+    })
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
