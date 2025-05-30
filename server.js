@@ -8,12 +8,12 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json'); 
 const jwt = require('jsonwebtoken');
 
-// Import authentication strategy
+// Import authentication 
 require('./auth/google'); 
 
 const app = express();
 app.use(cors({
-    origin: '*', // Allow all origins (for testing)
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -33,17 +33,17 @@ mongoose.connect(process.env.MONGODB_URI)
 const authenticate = (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-        console.log("⛔ No token provided");
+        console.log("No token provided");
         return res.status(401).json({ error: "Unauthorized" });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("✅ Decoded user:", decoded);
+        console.log("Decoded user:", decoded);
         req.userId = decoded.userId;
         next();
     } catch (err) {
-        console.error("⛔ JWT verification failed:", err.message);
+        console.error("JWT verification failed:", err.message);
         res.status(403).json({ error: "Invalid token" });
     }
 };

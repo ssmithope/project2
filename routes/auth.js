@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 
-// Signup Route (With Validation)
+// Signup Route
 router.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     
@@ -55,13 +55,13 @@ router.get('/auth/google/callback',
     }
 );
 
-// Logout Route (Fix session clearing)
+// Logout Route 
 router.post('/logout', (req, res) => {
     req.logout((err) => {
         if (err) {
             return res.status(500).json({ error: "Logout failed" });
         }
-        req.session = null; // Clear session properly
+        req.session = null; 
         res.json({ message: "Logged out successfully" });
     });
 });
