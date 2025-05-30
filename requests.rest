@@ -1,26 +1,33 @@
 ### Get All Users
 GET http://localhost:10000/users
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4ZWI4ODc5Mjg4N2I4YWY3ZDU5ZTciLCJpYXQiOjE3NDg1NjEzNzksImV4cCI6MTc0ODU2NDk3OX0.TtZT9k8-d9YhY7Mn5a3WpYSVm0GWAg1AOj75hBUJ_Sc
+
 
 ### Get User by ID
 GET http://localhost:10000/users/68350ce681ba1dc3663bf607
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4ZWI4ODc5Mjg4N2I4YWY3ZDU5ZTciLCJpYXQiOjE3NDg1NjEzNzksImV4cCI6MTc0ODU2NDk3OX0.TtZT9k8-d9YhY7Mn5a3WpYSVm0GWAg1AOj75hBUJ_Sc
+
 
 ### Create a New User
 POST http://localhost:10000/users
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4ZWI4ODc5Mjg4N2I4YWY3ZDU5ZTciLCJpYXQiOjE3NDg1NjEzNzksImV4cCI6MTc0ODU2NDk3OX0.TtZT9k8-d9YhY7Mn5a3WpYSVm0GWAg1AOj75hBUJ_Sc
 
 {
    "firstName": "John",
    "lastName": "Doe",
-   "email": "doejn@example.com",
+   "email": "doem@example.com",
    "password": "securepass",
    "role": "user"
 }
 
+
 ### Update User by ID 
 PUT http://localhost:10000/users/68350ce681ba1dc3663bf607
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4ZWI4ODc5Mjg4N2I4YWY3ZDU5ZTciLCJpYXQiOjE3NDg1NjEzNzksImV4cCI6MTc0ODU2NDk3OX0.TtZT9k8-d9YhY7Mn5a3WpYSVm0GWAg1AOj75hBUJ_Sc
 
 {
    "firstName": "John",
@@ -30,6 +37,8 @@ Content-Type: application/json
    "role": "admin"
 }
 
+
 ### Delete User by ID (Replace {id} with actual ID)
 DELETE http://localhost:10000/users/{id}
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4ZWI4ODc5Mjg4N2I4YWY3ZDU5ZTciLCJpYXQiOjE3NDg1NjEzNzksImV4cCI6MTc0ODU2NDk3OX0.TtZT9k8-d9YhY7Mn5a3WpYSVm0GWAg1AOj75hBUJ_Sc

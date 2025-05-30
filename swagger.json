@@ -6,12 +6,50 @@
   },
   "host": "localhost:10000",
   "schemes": ["http"],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
   "paths": {
     "/users": {
-      "get": { "summary": "Get all users", "responses": { "200": { "description": "Success" } } }
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get all users (Requires Authentication)",
+        "responses": {
+          "200": { "description": "Success" },
+          "401": { "description": "Unauthorized" }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "responses": {
+          "201": { "description": "User created successfully" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
     },
     "/users/{id}": {
-      "get": { "summary": "Get a user by ID", "responses": { "200": { "description": "Success" } } }
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get a user by ID (Requires Authentication)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "MongoDB ObjectId of the user"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" },
+          "400": { "description": "Invalid ID format" },
+          "404": { "description": "User not found" }
+        }
+      }
     }
   }
 }

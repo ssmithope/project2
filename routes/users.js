@@ -2,17 +2,32 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-// Get all users
-router.get('/', async (req, res) => {
+// Middleware for authentication
+const authenticate = (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.userId = decoded.userId;
+        next();
+    } catch {
+        res.status(403).json({ error: "Invalid token" });
+    }
+};
+
+// Get all users (Protected Route)
+router.get('/', authenticate, async (req, res) => {
     const users = await User.find();
     res.json(users);
 });
 
-//Get user by ID
-router.get('/:id', async (req, res) => {
+// Get user by ID (Protected Route)
+router.get('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
         return res.status(400).json({ error: "Invalid ID format" });
@@ -21,7 +36,7 @@ router.get('/:id', async (req, res) => {
     user ? res.json(user) : res.status(404).json({ error: "User not found" });
 });
 
-//Create a new user
+// Create a new user (Public Route)
 router.post('/', async (req, res) => {
     try {
         const newUser = new User(req.body);
@@ -32,8 +47,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Update user
-router.put('/:id', async (req, res) => {
+// Update user (Protected Route)
+router.put('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
         return res.status(400).json({ error: "Invalid ID format" });
@@ -42,8 +57,8 @@ router.put('/:id', async (req, res) => {
     updatedUser ? res.json({ message: "User updated successfully", user: updatedUser }) : res.status(404).json({ error: "User not found" });
 });
 
-// Delete user
-router.delete('/:id', async (req, res) => {
+// Delete user (Protected Route)
+router.delete('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     if (!isValidObjectId(id)) {
         return res.status(400).json({ error: "Invalid ID format" });
