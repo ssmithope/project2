@@ -6,11 +6,11 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json'); 
+const swaggerDocument = require('./swagger.json');
 const jwt = require('jsonwebtoken');
 
 // Import authentication 
-require('./auth/google'); 
+require('./auth/google');
 
 const app = express();
 app.use(cors({
@@ -27,36 +27,42 @@ app.use(session({
     saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
-        ttl: 14 * 24 * 60 * 60 
-    })
+        ttl: 14 * 24 * 60 * 60
+    }),
+    cookie: {
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        sameSite: "strict"
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Connect to MongoDB
+// Improved MongoDB Connection Handling
 mongoose.connect(process.env.MONGODB_URI)
    .then(() => console.log("MongoDB Connected to Project 2"))
-   .catch(err => console.error("MongoDB Connection Error:", err));
+   .catch(err => {
+       console.error("MongoDB Connection Error:", err);
+       process.exit(1);
+   });
 
 // Authentication Middleware
 const authenticate = (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-        console.log("No token provided");
-        return res.status(401).json({ error: "Unauthorized" });
+        console.warn("No token provided");
+        return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Decoded user:", decoded);
         req.userId = decoded.userId;
         next();
     } catch (err) {
         console.error("JWT verification failed:", err.message);
-        res.status(403).json({ error: "Invalid token" });
+        res.status(403).json({ error: "Invalid or expired token" });
     }
 };
-
 
 // Routes
 app.use('/users', require('./routes/users'));
@@ -87,9 +93,9 @@ app.get('/', (req, res) => {
 
 // 404 Error Handling
 app.use((req, res) => {
-    res.status(404).json({ error: "Route not found" });
+    res.status(404).json({ error: `Route ${req.originalUrl} not found` });
 });
 
 // Start Server
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(` Server running on port ${PORT}`));

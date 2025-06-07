@@ -30,13 +30,24 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
+        const { name, phone, email, address } = req.body;
+        if (!name || !phone || !email || !address) {
+            return res.status(400).json({ error: "Name, phone, email, and address are required." });
+        }
+
+        const existingContact = await Contact.findOne({ phone });
+        if (existingContact) {
+            return res.status(409).json({ error: "Phone number already exists." });
+        }
+
         const newContact = new Contact(req.body);
         await newContact.save();
         res.status(201).json({ message: "Contact created successfully", contact: newContact });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;

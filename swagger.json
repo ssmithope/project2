@@ -25,8 +25,19 @@
       },
       "post": {
         "summary": "Create a new user",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
         "responses": {
           "201": { "description": "User created successfully" },
+          "400": { "description": "Validation error: Missing required fields" },
           "500": { "description": "Internal Server Error" }
         }
       }
@@ -49,6 +60,67 @@
           "400": { "description": "Invalid ID format" },
           "404": { "description": "User not found" }
         }
+      },
+      "put": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Update a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "MongoDB ObjectId of the user"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User updated successfully" },
+          "400": { "description": "Invalid request body" },
+          "404": { "description": "User not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Delete a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "MongoDB ObjectId of the user"
+          }
+        ],
+        "responses": {
+          "200": { "description": "User deleted successfully" },
+          "404": { "description": "User not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "role": { "type": "string" }
+        },
+        "required": ["firstName", "email", "password", "role"]
       }
     }
   }
