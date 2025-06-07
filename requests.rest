@@ -12,6 +12,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4Z
 POST http://localhost:10000/users
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4ZWI4ODc5Mjg4N2I4YWY3ZDU5ZTciLCJpYXQiOjE3NDkyNjEzNDcsImV4cCI6MTc0OTI2NDk0N30.JjDRbeh7_OGK3SGYicNZnbCdp3dUmP73uy9OQsekgGI
+
 {
    "firstName": "John",
    "lastName": "Doe",
@@ -19,7 +20,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4Z
    "password": "securepass",
    "role": "user"
 }
-
 
 ### Update User by ID 
 PUT http://localhost:10000/users/68350ce681ba1dc3663bf607
@@ -33,6 +33,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM4Z
    "password": "newsecurepass",
    "role": "admin"
 }
+
 
 
 ### Delete User by ID 
