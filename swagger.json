@@ -16,17 +16,16 @@
   "paths": {
     "/users": {
       "get": {
-        "security": [{ "BearerAuth": [] }],
         "summary": "Get all users (Requires Authentication)",
+        "security": [{ "BearerAuth": [] }],
         "responses": {
           "200": { "description": "Success" },
           "401": { "description": "Unauthorized" }
         }
       },
-      "/users": {
       "post": {
         "summary": "Create a new user",
-        "parameters": [],
+        "security": [{ "BearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -45,8 +44,7 @@
     },
     "/users/{id}": {
       "get": {
-        "security": [{ "BearerAuth": [] }],
-        "summary": "Get a user by ID (Requires Authentication)",
+        "summary": "Get a user by ID",
         "parameters": [
           {
             "name": "id",
@@ -63,8 +61,8 @@
         }
       },
       "put": {
-        "security": [{ "BearerAuth": [] }],
         "summary": "Update a user by ID",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -91,8 +89,8 @@
         }
       },
       "delete": {
-        "security": [{ "BearerAuth": [] }],
         "summary": "Delete a user by ID",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -105,6 +103,31 @@
         "responses": {
           "200": { "description": "User deleted successfully" },
           "404": { "description": "User not found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/contacts": {
+      "get": {
+        "summary": "Get all contacts",
+        "responses": {
+          "200": { "description": "Success" }
+        }
+      },
+      "post": {
+        "summary": "Create a new contact",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Contact created successfully" },
+          "400": { "description": "Validation error: Missing required fields" },
           "500": { "description": "Internal Server Error" }
         }
       }
@@ -122,8 +145,17 @@
           "role": { "type": "string" }
         },
         "required": ["firstName", "email", "password", "role"]
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "address": { "type": "string" }
+        },
+        "required": ["name", "phone", "email", "address"]
       }
     }
   }
-}
 }

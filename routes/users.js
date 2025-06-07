@@ -21,7 +21,7 @@ const authenticate = (req, res, next) => {
 };
 
 // Get all users 
-router.get('/', authenticate, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const users = await User.find();
         res.json(users);
@@ -31,7 +31,7 @@ router.get('/', authenticate, async (req, res) => {
 });
 
 // Get user by ID 
-router.get('/:id', authenticate, async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         if (!isValidObjectId(id)) {
